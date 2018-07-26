@@ -1,0 +1,203 @@
+﻿<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <style>
+        * {
+            /* フォント （一部のフォントは上手く適用されない） */
+            font-family: "Meiryo";
+            font-size: 10px;
+            color: #DED7BE;
+            text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;
+            font-weight: 300;
+            white-space: nowrap;
+        }
+
+        body,
+        html {
+            margin: 0;
+        }
+
+        html {
+            /* リサイズ用のハンドル
+             * リサイズができる場所はウィンドウ右下の16x16ピクセルの場所
+             * この部分が完全に透明だとマウス入力が透過してしまってサイズを変更できなくなる */
+            background-image: url(handle.png);
+            background-position: bottom right;
+            background-repeat: no-repeat;
+            box-sizing: border-box;
+            height: 100%;
+            /* 外枠 */
+            /*border: 1px solid rgba(0,0,0,0.1);*/
+            /* はみ出た内容はスクロールバーを表示させずに隠す
+             * 今のところ、ブラウザへの入力はできないので表示させても無意味 */
+            overflow: hidden;
+            /* 背景色 */
+            background-color: transparent;
+        }
+
+        ul.header {
+            display: flex;
+            list-style: none;
+            justify-content: space-between;
+            margin: 0px;
+            padding-left: 0px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #DED7BE;
+            margin: 0px;
+        }
+
+        ul.container {
+            list-style-type: none;
+            padding-left: 20px;
+            margin: 0px;
+        }
+
+        div.subtitle {
+            padding-left: 1px;
+        }
+
+        table.detail {
+            margin-bottom: 4px;
+            line-height: 100%;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        span.title {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div v-if="visible">
+            <div id="current" v-if="items.current && items.current.count > 0">
+                <span class="title">Current</span>
+                <ul class="container">
+                    <li v-if="items.current.folklore.length > 0">
+                        <div class="subtitle">伝説</div>
+                        <hr>
+                        <table class="detail">
+                            <tr v-for="item in items.current.folklore">
+                                <td style="width:10%;">{{item.job}}</td>
+                                <td style="width:40%;">{{item.name}}</td>
+                                <td style="width:20%;">{{item.zone}}({{item.aetheryte}})</td>
+                                <td style="width:20%;">{{item.from}}～{{item.to}}</td>
+                                <td style="width:10%;">{{item.position}}段目</td>
+                            </tr>
+                        </table>
+                    </li>
+                    <li v-if="items.current.unspoiled.length > 0">
+                        <div class="subtitle">未知</div>
+                        <hr>
+                        <table class="detail">
+                            <tr v-for="item in items.current.unspoiled">
+                                <td style="width:10%;">{{item.job}}</td>
+                                <td style="width:40%;">{{item.name}}</td>
+                                <td style="width:20%;">{{item.zone}}({{item.aetheryte}})</td>
+                                <td style="width:20%;">{{item.from}}～{{item.to}}</td>
+                                <td style="width:10%;">{{item.position}}段目</td>
+                            </tr>
+                        </table>
+                    </li>
+                    <li v-if="items.current.ephemeral.length > 0">
+                        <div class="subtitle">刻限</div>
+                        <hr>
+                        <table class="detail">
+                            <tr v-for="item in items.current.ephemeral">
+                                <td style="width:10%;">{{item.job}}</td>
+                                <td style="width:40%;">{{item.name}}</td>
+                                <td style="width:20%;">{{item.zone}}({{item.aetheryte}})</td>
+                                <td style="width:20%;">{{item.from}}～{{item.to}}</td>
+                                <td style="width:10%;">{{item.position}}段目</td>
+                            </tr>
+                        </table>
+                    </li>
+                </ul>
+            </div>
+            <div id="soon" v-if="items.soon && items.soon.count > 0">
+                <span class="title">Soon</span>
+                <ul class="container">
+                    <li v-if="items.soon.folklore.length > 0">
+                        <div class="subtitle">伝説</div>
+                        <hr>
+                        <table class="detail">
+                            <tr v-for="item in items.soon.folklore">
+                                <td style="width:10%;">{{item.job}}</td>
+                                <td style="width:40%;">{{item.name}}</td>
+                                <td style="width:20%;">{{item.zone}}({{item.aetheryte}})</td>
+                                <td style="width:20%;">{{item.from}}～{{item.to}}</td>
+                                <td style="width:10%;">{{item.position}}段目</td>
+                            </tr>
+                        </table>
+                    </li>
+                    <li v-if="items.soon.unspoiled.length > 0">
+                        <div class="subtitle">未知</div>
+                        <hr>
+                        <table class="detail">
+                            <tr v-for="item in items.soon.unspoiled">
+                                <td style="width:10%;">{{item.job}}</td>
+                                <td style="width:40%;">{{item.name}}</td>
+                                <td style="width:20%;">{{item.zone}}({{item.aetheryte}})</td>
+                                <td style="width:20%;">{{item.from}}～{{item.to}}</td>
+                                <td style="width:10%;">{{item.position}}段目</td>
+                            </tr>
+                        </table>
+                    </li>
+                    <li v-if="items.soon.ephemeral.length > 0">
+                        <div class="subtitle">刻限</div>
+                        <hr>
+                        <table class="detail">
+                            <tr v-for="item in items.soon.ephemeral">
+                                <td style="width:10%;">{{item.job}}</td>
+                                <td style="width:40%;">{{item.name}}</td>
+                                <td style="width:20%;">{{item.zone}}({{item.aetheryte}})</td>
+                                <td style="width:20%;">{{item.from}}～{{item.to}}</td>
+                                <td style="width:10%;">{{item.position}}段目</td>
+                            </tr>
+                        </table>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <script type="text/javascript">
+        var config = {};
+
+        // Vueインスタンス初期化
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                visible: false,
+                items: {},
+            },
+            filters: {
+                date: function (date) {
+                    return moment(date).format('HH:mm:ss');
+                }
+            }
+        });
+
+        // Update時に呼び出される
+        function update(json) {
+            // 配列に放り込む
+            vm.items = json.items;
+            vm.visible = json.visible;
+        }
+
+        // onOverlayDataUpdate イベントを購読
+        document.addEventListener("onOverlayDataUpdate", function (e) {
+            update(e.detail);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{97557280-EA10-41C3-807A-6A107EF15AC4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AmamaNagigi.GatheringPlugin</RootNamespace>
+    <AssemblyName>GatheringPlugin</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Advanced Combat Tracker, Version=3.3.1.256, Culture=neutral, PublicKeyToken=a946b61e93d97868, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\ACT\Advanced Combat Tracker.exe</HintPath>
+    </Reference>
+    <Reference Include="FFXIV_ACT_Plugin, Version=1.4.2.14, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\amanagi\AppData\Roaming\Advanced Combat Tracker\Plugins\FFXIV_ACT_Plugin.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlRenderer, Version=1.0.1.8, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="OverlayPlugin.Common">
+      <HintPath>..\..\..\..\..\..\Program Files\ACT\OverlayPlugin\OverlayPlugin.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="OverlayPlugin.Core">
+      <HintPath>..\..\..\..\..\..\Program Files\ACT\OverlayPlugin\OverlayPlugin.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Xilium.CefGlue, Version=3.2272.2035.0, Culture=neutral, PublicKeyToken=6235298024de30d5" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entities\AddonConfig.cs" />
+    <Compile Include="Entities\ItemInfo.cs" />
+    <Compile Include="Entities\ItemInfoWithCheck.cs" />
+    <Compile Include="FFXIVPluginHelper.cs" />
+    <Compile Include="GatheringPluginOverlay.cs" />
+    <Compile Include="GatheringPlugin.cs" />
+    <Compile Include="GatheringPluginOverlayConfig.cs" />
+    <Compile Include="GatheringPluginOverlayConfigPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GatheringPluginOverlayConfigPanel.Designer.cs">
+      <DependentUpon>GatheringPluginOverlayConfigPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Items.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Extensions\EorzeaTimeExtention.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="build.ps1" />
+    <None Include="items.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="GatheringPluginOverlayConfigPanel.resx">
+      <DependentUpon>GatheringPluginOverlayConfigPanel.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\DataSources\AmamaNagigi.GatheringPlugin.Entities.ItemInfoWithCheck.datasource" />
+    <None Include="Properties\DataSources\GatheringPluginOverlayConfig.datasource" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="resources\gathering.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>echo ACTのフォルダにコピー
+copy "$(ProjectDir)$(OutDir)$(TargetFileName)" "D:\Program Files\ACT\OverlayPlugin\addons"
+copy "$(ProjectDir)$(OutDir)resources\gathering.html" "D:\Program Files\ACT\OverlayPlugin\resources"
+copy "$(ProjectDir)$(OutDir)items.csv" "D:\Program Files\ACT\OverlayPlugin\addons"
+echo 配布用アーカイブ作成
+xcopy "$(ProjectDir)$(OutDir)$(TargetFileName)" "$(ProjectDir)dist\$(ProjectName)\addons\" /Y
+xcopy "$(ProjectDir)$(OutDir)items.csv" "$(ProjectDir)dist\$(ProjectName)\addons\" /Y
+xcopy "$(ProjectDir)$(OutDir)resources" "$(ProjectDir)dist\$(ProjectName)\resources\" /Y
+powershell -ExecutionPolicy Unrestricted $(ProjectDir)build.ps1 $(ProjectDir)dist\$(ProjectName)\* $(ProjectDir)dist\$(ProjectName).zip</PostBuildEvent>
+  </PropertyGroup>
+</Project>
