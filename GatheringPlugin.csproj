@@ -30,21 +30,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Advanced Combat Tracker, Version=3.3.1.256, Culture=neutral, PublicKeyToken=a946b61e93d97868, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\ACT\Advanced Combat Tracker.exe</HintPath>
+    <Reference Include="Advanced Combat Tracker">
+      <HintPath>..\..\..\..\Program Files\Actor_v2.0.4.2\ACT\Advanced Combat Tracker.exe</HintPath>
     </Reference>
-    <Reference Include="FFXIV_ACT_Plugin, Version=1.4.2.14, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\amanagi\AppData\Roaming\Advanced Combat Tracker\Plugins\FFXIV_ACT_Plugin.dll</HintPath>
+    <Reference Include="FFXIV_ACT_Plugin">
+      <HintPath>..\..\..\..\Program Files\Actor_v2.0.4.2\ACT\plugin\FFXIV_ACT_Plugin\FFXIV_ACT_Plugin.dll</HintPath>
     </Reference>
     <Reference Include="HtmlRenderer, Version=1.0.1.8, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="OverlayPlugin.Common">
-      <HintPath>..\..\..\..\..\..\Program Files\ACT\OverlayPlugin\OverlayPlugin.Common.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files\Actor_v2.0.4.2\ACT\plugin\OverlayPlugin\OverlayPlugin.Common.dll</HintPath>
     </Reference>
     <Reference Include="OverlayPlugin.Core">
-      <HintPath>..\..\..\..\..\..\Program Files\ACT\OverlayPlugin\OverlayPlugin.Core.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files\Actor_v2.0.4.2\ACT\plugin\OverlayPlugin\OverlayPlugin.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
